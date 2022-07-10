@@ -20,8 +20,8 @@ const ResultsWrapper = styled.div`
     width: 100%;
 `;
 
-const ResultContainer = () => {
-    const data = DummyData;
+const ResultContainer = ({ fetchedData }) => {
+    const data = fetchedData;
 
     return (
         <Container>
@@ -32,8 +32,7 @@ const ResultContainer = () => {
                 {data.hits?.map((imgData) => (
                     <ImageCard key={imgData.id} imgData={imgData} />
                 ))}
-                {/* 검색 결과가 없을 시 페이지네이션과 ImgCard 목록 대신 EmptyResult가 렌더되어야 합니다. */}
-                {/* <EmptyResult /> */}
+                {data.total === 0 && <EmptyResult />}
             </ResultsWrapper>
         </Container>
     );
