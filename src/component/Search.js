@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as SearchIcon } from '../asset/search.svg';
 import SearchTag from './SearchTag';
@@ -50,16 +50,46 @@ const SearchOptionButton = styled.p`
 const Search = ({ setQuery }) => {
     const [searchOption, setSearchOption] = useState(false);
     const inputRef = useRef();
+    const [recentSearches, setRecentSearches] = useState([]);
 
     const toggleSearchOption = () => {
         setSearchOption((prev) => !prev);
     };
 
-    const handleOnKeyPress = (e) => {
-        if (e.key !== 'Enter') return;
-        setQuery(inputRef.current.value);
-        inputRef.current.value = '';
+    const addRecentSearches = (keyword) => {
+        if (keyword) {
+            let newRecentSearches;
+            if (recentSearches.includes(keyword)) {
+                const indexOfKeyword = recentSearches.indexOf(keyword);
+                recentSearches.splice(indexOfKeyword, 1);
+                recentSearches.unshift(keyword);
+                newRecentSearches = recentSearches;
+            } else {
+                newRecentSearches = [...recentSearches, keyword];
+            }
+            setRecentSearches(newRecentSearches);
+            localStorage.setItem(
+                'recentSearches',
+                JSON.stringify(newRecentSearches)
+            );
+        }
     };
+
+    const handleOnKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            const searchWord = inputRef.current.value.trim();
+            setQuery(searchWord);
+            addRecentSearches(searchWord);
+            inputRef.current.value = '';
+        }
+    };
+
+    useEffect(() => {
+        const recentSearches = JSON.parse(
+            localStorage.getItem('recentSearches')
+        );
+        recentSearches && setRecentSearches(recentSearches);
+    }, []);
 
     return (
         <>
@@ -69,7 +99,9 @@ const Search = ({ setQuery }) => {
                     <SearchInput
                         placeholder="검색어 입력 후 ENTER"
                         ref={inputRef}
-                        onKeyPress={handleOnKeyPress}
+                        onKeyPress={(e) => {
+                            handleOnKeyPress(e);
+                        }}
                     />
                     <SearchOptionButton onClick={toggleSearchOption}>
                         검색 옵션 {searchOption ? '닫기' : '열기'}
@@ -78,7 +110,12 @@ const Search = ({ setQuery }) => {
                 {searchOption && <SearchOption />}
             </SearchBoxContainer>
             <SearchTagContainer>
-                <SearchTag />
+                <SearchTag
+                    recentSearches={recentSearches}
+                    setRecentSearches={setRecentSearches}
+                    setQuery={setQuery}
+                    inputRef={inputRef}
+                />
             </SearchTagContainer>
         </>
     );

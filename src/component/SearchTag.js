@@ -23,13 +23,34 @@ const TagLabel = styled.span`
     }
 `;
 
-const SearchTag = () => {
-    return (
-        <Tag>
-            <TagLabel>최근 검색어</TagLabel>
-            <DeleteIcon width="12px" />
+const SearchTag = ({
+    recentSearches,
+    setRecentSearches,
+    setQuery,
+    inputRef,
+}) => {
+    const search = (e, word) => {
+        if (e.target.tagName === 'line') return;
+        setQuery(word);
+        inputRef.current.value = word;
+    };
+    const deleteWord = (word) => {
+        const filteredRecentSearches = recentSearches.filter(
+            (recentSearch) => recentSearch !== word
+        );
+        setRecentSearches(filteredRecentSearches);
+        localStorage.setItem(
+            'recentSearches',
+            JSON.stringify(filteredRecentSearches)
+        );
+    };
+
+    return recentSearches.map((word) => (
+        <Tag onClick={(e) => search(e, word)}>
+            <TagLabel>{word}</TagLabel>
+            <DeleteIcon width="12px" onClick={(e) => deleteWord(word)} />
         </Tag>
-    );
+    ));
 };
 
 export default SearchTag;
