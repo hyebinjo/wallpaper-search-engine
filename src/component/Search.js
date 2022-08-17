@@ -47,7 +47,7 @@ const SearchOptionButton = styled.p`
     color: #5e5e5e;
 `;
 
-const Search = ({ setQuery }) => {
+const Search = ({ setQuery, setOrientation, setOrder, setPerPage }) => {
     const [searchOption, setSearchOption] = useState(false);
     const inputRef = useRef();
     const [recentSearches, setRecentSearches] = useState([]);
@@ -107,7 +107,13 @@ const Search = ({ setQuery }) => {
                         검색 옵션 {searchOption ? '닫기' : '열기'}
                     </SearchOptionButton>
                 </SearchInputContainer>
-                {searchOption && <SearchOption />}
+                {searchOption && (
+                    <SearchOption
+                        setOrientation={setOrientation}
+                        setOrder={setOrder}
+                        setPerPage={setPerPage}
+                    />
+                )}
             </SearchBoxContainer>
             <SearchTagContainer>
                 <SearchTag

@@ -42,7 +42,12 @@ function App() {
     return (
         <>
             <Container>
-                <Hero setQuery={setQuery} />
+                <Hero
+                    setQuery={setQuery}
+                    setOrientation={setOrientaion}
+                    setOrder={setOrder}
+                    setPerPage={setPerPage}
+                />
                 <ResultContainer fetchedData={data} />
                 <Footer />
                 <ToggleThemeButton />

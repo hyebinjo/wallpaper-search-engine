@@ -36,7 +36,7 @@ const Content = styled.div`
     padding: 120px 32px 16px 32px;
 `;
 
-const Hero = ({ setQuery }) => {
+const Hero = ({ setQuery, setOrientation, setOrder, setPerPage }) => {
     return (
         <Container>
             <Content>
@@ -44,7 +44,12 @@ const Hero = ({ setQuery }) => {
                     <HeroTitleLink href="./">배경화면 검색 엔진</HeroTitleLink>
                 </HeroTitle>
                 <HeroSubtitle>오늘 나의 배경화면은? 👀</HeroSubtitle>
-                <Search setQuery={setQuery} />
+                <Search
+                    setQuery={setQuery}
+                    setOrientation={setOrientation}
+                    setOrder={setOrder}
+                    setPerPage={setPerPage}
+                />
             </Content>
         </Container>
     );
