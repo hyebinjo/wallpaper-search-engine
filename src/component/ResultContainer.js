@@ -29,7 +29,9 @@ const ResultContainer = ({ fetchedData, perPage, setPage, page }) => {
         <Container>
             {/* ImgCard 클릭 시 해당 이미지의 정보로 ImageModal이 나타나야 합니다. */}
             {/* <ImageModal /> */}
-            <Pagination pages={pages} setPage={setPage} page={page} />
+            {pages !== 0 && (
+                <Pagination pages={pages} setPage={setPage} page={page} />
+            )}
             <ResultsWrapper>
                 {fetchedData.hits?.map((imgData) => (
                     <ImageCard key={imgData.id} imgData={imgData} />
