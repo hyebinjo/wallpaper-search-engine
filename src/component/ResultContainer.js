@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import ImageCard from './ImageCard';
 import ImageModal from './ImageModal';
-import Pagination from './Pagination';
-import EmptyResult from './EmptyResult';
+// import Pagination from './Pagination';
+// import EmptyResult from './EmptyResult';
 
 const Container = styled.div`
     max-width: 1830px;
@@ -22,18 +22,18 @@ const ResultsWrapper = styled.div`
 const ResultContainer = ({ fetchedData, perPage, setPage, page }) => {
     const [imgData, setImgData] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
-    const pages = fetchedData.totalHits
-        ? Math.ceil(fetchedData.totalHits / perPage)
-        : 0;
+    // const pages = fetchedData.totalHits
+    //     ? Math.ceil(fetchedData.totalHits / perPage)
+    //     : 0;
 
     return (
         <Container>
             {modalOpen && (
                 <ImageModal imgData={imgData} setModalOpen={setModalOpen} />
             )}
-            {pages !== 0 && (
+            {/* {pages !== 0 && (
                 <Pagination pages={pages} setPage={setPage} page={page} />
-            )}
+            )} */}
             <ResultsWrapper>
                 {fetchedData.hits?.map((imgData) => (
                     <ImageCard
@@ -45,7 +45,6 @@ const ResultContainer = ({ fetchedData, perPage, setPage, page }) => {
                         }}
                     />
                 ))}
-                {fetchedData.total === 0 && <EmptyResult />}
             </ResultsWrapper>
         </Container>
     );
