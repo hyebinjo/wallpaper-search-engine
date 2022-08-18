@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { ReactComponent as SearchIcon } from '../asset/search.svg';
 import SearchTag from './SearchTag';
 import SearchOption from './SearchOption';
-import request from '../api/request';
 
 const SearchTagContainer = styled.div`
     display: flex;
