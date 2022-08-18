@@ -20,7 +20,7 @@ const ResultsWrapper = styled.div`
     width: 100%;
 `;
 
-const ResultContainer = ({ fetchedData, perPage, setPage }) => {
+const ResultContainer = ({ fetchedData, perPage, setPage, page }) => {
     const pages = fetchedData.totalHits
         ? Math.ceil(fetchedData.totalHits / perPage)
         : 0;
@@ -29,7 +29,7 @@ const ResultContainer = ({ fetchedData, perPage, setPage }) => {
         <Container>
             {/* ImgCard 클릭 시 해당 이미지의 정보로 ImageModal이 나타나야 합니다. */}
             {/* <ImageModal /> */}
-            <Pagination pages={pages} setPage={setPage} />
+            <Pagination pages={pages} setPage={setPage} page={page} />
             <ResultsWrapper>
                 {fetchedData.hits?.map((imgData) => (
                     <ImageCard key={imgData.id} imgData={imgData} />

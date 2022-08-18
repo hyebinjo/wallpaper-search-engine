@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { ReactComponent as PrevIcon } from '../asset/prev.svg';
 import { ReactComponent as NextIcon } from '../asset/next.svg';
+import { useRef } from 'react';
 
 const Nav = styled.nav`
     display: flex;
@@ -24,12 +25,27 @@ const PageSelect = styled.select`
     }
 `;
 
-const Pagination = ({ pages, setPage }) => {
+const Pagination = ({ pages, setPage, page }) => {
+    const ref = useRef();
     return (
         <Nav>
-            <PrevIcon width="24" cursor="pointer" fill="var(--text)" />
+            {page != 1 && (
+                <PrevIcon
+                    width="24"
+                    cursor="pointer"
+                    fill="var(--text)"
+                    onClick={() => {
+                        setPage((prev) => prev - 1);
+                        ref.current.value = page - 1;
+                    }}
+                />
+            )}
             {`총 ${pages} 중 `}
-            <PageSelect name="page" onChange={(e) => setPage(e.target.value)}>
+            <PageSelect
+                name="page"
+                onChange={(e) => setPage(e.target.value)}
+                ref={ref}
+            >
                 {new Array(pages).fill('').map((page, index) => (
                     <option value={index + 1} key={index + 1}>
                         {index + 1}
@@ -37,7 +53,17 @@ const Pagination = ({ pages, setPage }) => {
                 ))}
             </PageSelect>
             페이지
-            <NextIcon width="24" cursor="pointer" fill="var(--text)" />
+            {page != pages && (
+                <NextIcon
+                    width="24"
+                    cursor="pointer"
+                    fill="var(--text)"
+                    onClick={() => {
+                        setPage((prev) => prev + 1);
+                        ref.current.value = page + 1;
+                    }}
+                />
+            )}
         </Nav>
     );
 };

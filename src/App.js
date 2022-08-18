@@ -52,6 +52,7 @@ function App() {
                     fetchedData={data}
                     perPage={perPage}
                     setPage={setPage}
+                    page={page}
                 />
                 <Footer />
                 <ToggleThemeButton />
