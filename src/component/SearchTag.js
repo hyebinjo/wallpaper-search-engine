@@ -46,7 +46,7 @@ const SearchTag = ({
     };
 
     return recentSearches.map((word) => (
-        <Tag onClick={(e) => search(e, word)}>
+        <Tag key={word} onClick={(e) => search(e, word)}>
             <TagLabel>{word}</TagLabel>
             <DeleteIcon width="12px" onClick={(e) => deleteWord(word)} />
         </Tag>
