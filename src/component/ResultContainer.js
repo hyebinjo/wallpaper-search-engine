@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DummyData from '../asset/dummyData';
 import ImageCard from './ImageCard';
 import ImageModal from './ImageModal';
@@ -20,19 +20,21 @@ const ResultsWrapper = styled.div`
     width: 100%;
 `;
 
-const ResultContainer = ({ fetchedData }) => {
-    const data = fetchedData;
+const ResultContainer = ({ fetchedData, perPage, setPage }) => {
+    const pages = fetchedData.totalHits
+        ? Math.ceil(fetchedData.totalHits / perPage)
+        : 0;
 
     return (
         <Container>
             {/* ImgCard 클릭 시 해당 이미지의 정보로 ImageModal이 나타나야 합니다. */}
             {/* <ImageModal /> */}
-            <Pagination />
+            <Pagination pages={pages} setPage={setPage} />
             <ResultsWrapper>
-                {data.hits?.map((imgData) => (
+                {fetchedData.hits?.map((imgData) => (
                     <ImageCard key={imgData.id} imgData={imgData} />
                 ))}
-                {data.total === 0 && <EmptyResult />}
+                {fetchedData.total === 0 && <EmptyResult />}
             </ResultsWrapper>
         </Container>
     );

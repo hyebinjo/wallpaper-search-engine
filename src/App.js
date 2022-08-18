@@ -28,7 +28,7 @@ function App() {
             orientation: orientation,
             order: order,
             page: page,
-            per_pate: perPage,
+            per_page: perPage,
         });
         const getData = async () => {
             const data = await request(
@@ -48,7 +48,11 @@ function App() {
                     setOrder={setOrder}
                     setPerPage={setPerPage}
                 />
-                <ResultContainer fetchedData={data} />
+                <ResultContainer
+                    fetchedData={data}
+                    perPage={perPage}
+                    setPage={setPage}
+                />
                 <Footer />
                 <ToggleThemeButton />
             </Container>
