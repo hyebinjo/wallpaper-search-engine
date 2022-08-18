@@ -4,9 +4,10 @@ import Hero from './component/Hero';
 import ResultContainer from './component/ResultContainer';
 import Footer from './component/Footer';
 import './App.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import request from './api/request';
 import generateQueryString from './utils/generateQueryString';
+import EmptyResult from './component/EmptyResult';
 
 const Container = styled.div`
     position: relative;
@@ -21,6 +22,9 @@ function App() {
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(20);
     const [data, setData] = useState({});
+    const target = useRef(null);
+
+    const pages = data.totalHits ? Math.ceil(data.totalHits / perPage) : 0;
 
     useEffect(() => {
         const queryString = generateQueryString({
@@ -34,10 +38,36 @@ function App() {
             const data = await request(
                 `https://pixabay.com/api/?key=${process.env.REACT_APP_PIXABAY}&${queryString}`
             );
-            setData(data);
+            if (page === 1) {
+                setData(data);
+            } else {
+                setData((prevData) => ({
+                    ...prevData,
+                    hits: prevData.hits.concat(data.hits),
+                }));
+            }
         };
         getData();
     }, [query, orientation, order, page, perPage]);
+
+    const onIntersect = ([entries]) => {
+        if (entries.isIntersecting) {
+            setPage((prev) => prev + 1);
+        }
+    };
+
+    useEffect(() => {
+        // if (target.current) return;
+        const observer = new IntersectionObserver(onIntersect, {
+            threshold: 1,
+        });
+        observer.observe(target.current);
+        return () => observer.disconnect();
+    }, []);
+
+    useEffect(() => {
+        setPage(1);
+    }, [order, orientation, perPage, query]);
 
     return (
         <>
@@ -54,6 +84,11 @@ function App() {
                     setPage={setPage}
                     page={page}
                 />
+                {pages !== page && (
+                    <div ref={target}>
+                        <EmptyResult isLoading={data.totalHits} />
+                    </div>
+                )}
                 <Footer />
                 <ToggleThemeButton />
             </Container>
