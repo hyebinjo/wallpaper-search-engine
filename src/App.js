@@ -8,6 +8,8 @@ import { useEffect, useState, useRef } from 'react';
 import request from './api/request';
 import generateQueryString from './utils/generateQueryString';
 import EmptyResult from './component/EmptyResult';
+import Title from './component/Title';
+import Search from './component/Search';
 
 const Container = styled.div`
     position: relative;
@@ -15,9 +17,21 @@ const Container = styled.div`
     min-height: 100vh;
 `;
 
+const Header = styled.div`
+    position: relative;
+    width: 100%;
+    background-color: var(--secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 120px 32px 16px 32px;
+`;
+
 function App() {
     const [query, setQuery] = useState('');
-    const [orientation, setOrientaion] = useState('all');
+    const [orientation, setOrientation] = useState('all');
     const [order, setOrder] = useState('popular');
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(20);
@@ -72,12 +86,21 @@ function App() {
     return (
         <>
             <Container>
-                <Hero
+                {/* <Hero
                     setQuery={setQuery}
                     setOrientation={setOrientaion}
                     setOrder={setOrder}
                     setPerPage={setPerPage}
-                />
+                /> */}
+                <Header>
+                    <Title />
+                    <Search
+                        setQuery={setQuery}
+                        setOrientation={setOrientation}
+                        setOrder={setOrder}
+                        setPerPage={setPerPage}
+                    />
+                </Header>
                 <ResultContainer
                     fetchedData={data}
                     perPage={perPage}
