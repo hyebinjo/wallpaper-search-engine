@@ -51,6 +51,17 @@ const Search = ({ setQuery, setOrientation, setOrder, setPerPage }) => {
     const inputRef = useRef();
     const [recentSearches, setRecentSearches] = useState([]);
 
+    let debounceTimer;
+
+    const debounce = (callback, time, e) => {
+        if (debounceTimer) {
+            clearTimeout(debounceTimer);
+        }
+        debounceTimer = setTimeout(() => {
+            callback(e);
+        }, time);
+    };
+
     const toggleSearchOption = () => {
         setSearchOption((prev) => !prev);
     };
@@ -101,6 +112,9 @@ const Search = ({ setQuery, setOrientation, setOrder, setPerPage }) => {
                         onKeyPress={(e) => {
                             handleOnKeyPress(e);
                         }}
+                        onChange={(e) =>
+                            debounce(() => console.log(e.target.value), 200, e)
+                        }
                     />
                     <SearchOptionButton onClick={toggleSearchOption}>
                         검색 옵션 {searchOption ? '닫기' : '열기'}

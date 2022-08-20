@@ -1,9 +1,11 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import ImageCard from './ImageCard';
-import ImageModal from './ImageModal';
+// import ImageModal from './ImageModal';
 // import Pagination from './Pagination';
 // import EmptyResult from './EmptyResult';
+
+const ImageModal = React.lazy(() => import('./ImageModal'));
 
 const Container = styled.div`
     max-width: 1830px;
@@ -28,9 +30,11 @@ const ResultContainer = ({ fetchedData, perPage, setPage, page }) => {
 
     return (
         <Container>
-            {modalOpen && (
-                <ImageModal imgData={imgData} setModalOpen={setModalOpen} />
-            )}
+            <Suspense fallback={<h1>로딩중...</h1>}>
+                {modalOpen && (
+                    <ImageModal imgData={imgData} setModalOpen={setModalOpen} />
+                )}
+            </Suspense>
             {/* {pages !== 0 && (
                 <Pagination pages={pages} setPage={setPage} page={page} />
             )} */}
