@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import ToggleThemeButton from './component/ToggleThemeButton';
 import Hero from './component/Hero';
-import ResultContainer from './component/ResultContainer';
+import ResultContainer from './component/Image/ImageContainer';
 import Footer from './component/Footer';
 import './App.css';
 import { useEffect, useState, useRef } from 'react';
@@ -9,7 +9,7 @@ import request from './api/request';
 import generateQueryString from './utils/generateQueryString';
 import EmptyResult from './component/EmptyResult';
 import Title from './component/Title';
-import Search from './component/Search';
+import Search from './component/Search/Search';
 
 const Container = styled.div`
     position: relative;

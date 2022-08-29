@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import { ReactComponent as SearchIcon } from '../asset/search.svg';
+import { ReactComponent as SearchIcon } from '../../asset/search.svg';
 import SearchTag from './SearchTag';
 import SearchOption from './SearchOption';
+import debounce from '../../utils/debounce';
 
 const SearchTagContainer = styled.div`
     display: flex;
@@ -50,17 +51,6 @@ const Search = ({ setQuery, setOrientation, setOrder, setPerPage }) => {
     const [searchOption, setSearchOption] = useState(false);
     const inputRef = useRef();
     const [recentSearches, setRecentSearches] = useState([]);
-
-    let debounceTimer;
-
-    const debounce = (callback, time, e) => {
-        if (debounceTimer) {
-            clearTimeout(debounceTimer);
-        }
-        debounceTimer = setTimeout(() => {
-            callback(e);
-        }, time);
-    };
 
     const toggleSearchOption = () => {
         setSearchOption((prev) => !prev);
